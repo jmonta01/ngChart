@@ -1,0 +1,88 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+
+$gridColor:   #999999;
+$lineColor:   #732D14;
+$barColor:   #3DAFBF;
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+/* Space out content a bit */
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+
+.chart {
+
+  .x-axis, .y-axis {
+    text {
+      font: 10px sans-serif;
+    }
+
+    .domain {
+      fill: none;
+      stroke: darken( $gridColor, 30% );
+      stroke-width: 1;
+    }
+
+    .grid-line {
+      fill: none;
+      stroke: $gridColor;
+      stroke-width: 1px;
+    }
+  }
+
+  .tester {
+//    fill: rgba(255, 0, 0, .25);
+    stroke: none;
+  }
+
+  .line {
+    fill: none;
+    stroke: $lineColor;
+  }
+
+  .bar {
+    fill: $barColor;
+  }
+
+
+}
