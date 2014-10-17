@@ -13,7 +13,7 @@ angular.module('ngChartApp')
             $scope.data = [];
 
             $scope.bounds = {
-                x: { min: 0, max: 50, offset: 1},
+                x: { min: 0, max: 20, offset: 1},
                 y: { min: 0, max: 100, offset: 1}
             };
             $scope.fields =  { x: 'id', y: 'value' };
@@ -39,10 +39,16 @@ angular.module('ngChartApp')
                 };
             };
 
-            for (var i=0; i<=50; i++) {
+            for (var i=$scope.bounds.x.min; i<=$scope.bounds.x.max; i++) {
                 $scope.data.push(generateData(i));
             }
 
+
+            $scope.reloadData = function () {
+                angular.forEach($scope.data, function (item) {
+                   item.value = Math.random() * $scope.bounds.y.max;
+                });
+            }
 
 
         }

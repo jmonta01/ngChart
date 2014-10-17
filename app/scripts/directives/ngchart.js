@@ -23,7 +23,7 @@ angular.module('ngChartApp')
 
                     var w = angular.element($window);
                     var margin = { left: 30, top: 30, right: 30, bottom: 30 };
-                    var svg, grid, chart, xScale, yScale, line;
+                    var svg, grid, chart, bars, xScale, yScale, line;
 
 
                     function render (data) {
@@ -42,7 +42,7 @@ angular.module('ngChartApp')
                             .domain([scope.bounds.y.min, scope.bounds.y.max]);
 
 
-                        renderMarginTest();
+//                        renderMarginTest();
 
                         renderAxes();
                         renderChart(data);
@@ -111,45 +111,61 @@ angular.module('ngChartApp')
                             chart = svg.append('g').attr('class', 'body');
                         }
 
-//                        renderBarChart(data);
+                        renderBarChart(data);
                         renderLineChart(data);
                     }
 
                     function renderLineChart (data) {
-                        if (!line) {
-                            line = d3.svg.line()
-                                .x(function (d) {
-                                    return xScale(d[scope.fields.x]);
-                                })
-                                .y(function (d) {
-                                    return yScale(d[scope.fields.y]);
-                                });
+                        var line = d3.svg.line()
+                            .x(function (d, i) {
+                                return xScale(d[scope.fields.x]);
+                            })
+                            .y(function (d) {
+                                return yScale(d[scope.fields.y]);
+                            });
 
-                        }
+
+                        chart.selectAll("path.line").remove();
+
+                        chart.selectAll('path.line')
+                            .append("path")
+                            .attr('class', 'line')
+                            .data(data)
+                            .enter();
+
 
                         chart.selectAll('path.line')
                             .data(data)
-                            .enter()
-                                .append('path')
-                                    .attr('class', 'line')
-                                    .attr('d', function (d) {
-                                        console.log(line(d));
-                                        return line(d);
-                                    });
+                            .attr("d", line(data));
                     }
 
                     function renderBarChart (data) {
 
                         var barWidth = chartWidth() / data.length - 2;
 
-                        chart.selectAll('rect.bar')
+                        if (!bars) {
+                            bars = chart.append('g').attr('class', 'bars');
+                        }
+
+                        bars.selectAll('rect.bar')
                             .data(data)
                             .enter()
                                 .append('rect')
-                                    .attr('class', 'bar');
+                                    .attr('class', 'bar')
+                                    .attr('x', function (d, i) {
+                                        return xScale(d[scope.fields.x]) - barWidth/2;
+                                    })
+                                    .attr('y', chartYEnd())
+                                    .attr('width', barWidth)
+                                    .attr('height', 0);
 
-                        chart.selectAll('rect.bar')
+                        bars.selectAll('rect.bar')
                             .data(data)
+                            .transition()
+                            .duration(250)
+                            .delay(function (d, i) {
+                                return i * 10;
+                            })
                                 .attr('x', function (d, i) {
                                     return xScale(d[scope.fields.x]) - barWidth/2;
                                 })
@@ -247,7 +263,7 @@ angular.module('ngChartApp')
 
                     scope.$watch('data', function () {
                         render(scope.data);
-                    });
+                    }, true);
 
                     w.bind('resize', function () {
                         if (svg) {

@@ -78,6 +78,7 @@ body {
   .line {
     fill: none;
     stroke: $lineColor;
+    stroke-width: 2px;
   }
 
   .bar {
